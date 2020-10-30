@@ -18,69 +18,79 @@
 	- почта
 	- пароль
 	- роль (админ/участник/партнер) (по умолчанию участник)
-	
-
-2) users_activation
-	- user_id
-	- email verification bool
+	- баланс бинанса
+	- баланс кошелька
+	- email verification bool (подтверждение почты)
 	- api на торги
 	- ключ api на торги
 	- api на статистику
 	- api key на статистику
-	- promocode
-	- rules_flag
-	- activation_date
+	- rules_flag (ознакомленность с правилами)
+	- activation_date (дата, когда бот был активирован)
+	- создание записи
+	- обновление записи
 	
-3) user_conditions
-	- user_id
-	- статус (не активен/активен/новые сделки остановлены/бот полностью остановлен)
-	- level_id участия
-	- процент комисии (наследуется сначала от промокода, если его нет, то от уровня аккаунта)
-	- created_at
-	- updated_at
-	
-4) promo_type
+2) promo_type
 	- id
-	- name
-	- value
+	- description (могут быть как личные, так и общие промо. Направленные на разные цели)
+	- value (сумма скидки)
 
-4) promocode
+3) promo_codes
 	- id
-	- name
-	- from_user_id
-	- description
-	- discount
-	- created_at
-	- end_of_activation
+	- promo_type_id 
+	- body  (сам промокод)
+	- from_user_id (кто создатель промокода. можно от админа)
+	- start_of_promo начало промо
+	- end_of_promo конец промо
+
+4) promo
+	id 
+	user_id - кто использовал промокод
+	promocode_id 
+	is_active - активен ли 
+	created_at - когда подключен по промо
+
 	
 5) level аккаунта 
-	- id 
 	- название уровня
 	- описание уровня
 	- процент коммисии
 	
-
-	6); Notification_messages:
+		
+6) user_conditions
 	- user_id
-	- is_from_admin
-	- notification_type_id
-	- value
-	- status
-	- created_at
-	- updated_at
-
+	- статус (не активен/активен/новые сделки остановлены/бот полностью остановлен)
+	- level_name участия
+	- начало условий
+	- конец условий
+	
+	
 7) Notification types:
 	- id
 	-  notofocation_name
 	- notification_body
+	- от админа (нет сообщений, только коммуникация уведомлениями в том числе на почту )
 	
-8) Password_resets
+8) Notification_messages:
+- id	
+- user_id
+	- notification_type_id
+	- value (бывает что нужно для запроса на пополнения баланса)
+	- status
+	- created_at
+	- updated_at
+	
+9) Password_resets
 	- email
 	- token
+	- is_actual 
 	- created_at
 	
+	Важная таблица, по которой пользователь может следить за прогрессом 
+	и видеть сколько снимается/добавляется денег.
+	баланс бинанс и кошелька на данный момент + процент за сегодня и коммисия. Её калькуляция и размер зависит от уровеня учатсия (выше)
 	
-9) Daily reports
+10) Daily reports 
 	- date
 	- user_id
 	- balance_Binance
@@ -90,6 +100,8 @@
 	- created_at
 	- updated_at
 
+Таблица для отображения графиков. Информация о балансе приходит с Binance. Происходит калькуляция
+в коде нп росчет профита (проценты). Обновление проходит раз в час.
 10) Balances
 	user_id
 	date_balance
